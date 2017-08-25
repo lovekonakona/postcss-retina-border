@@ -15,7 +15,10 @@ function run(t, input, output, opts = {}) {
 test('Remove border-width', t => {
   return run(
     t,
-    'a{ border-width: 1px solid #ccc; }',
-    'a{ }'
+    `a{
+    border-width: 1px solid #ccc;
+}`,
+    `a{
+}`
   );
 });
