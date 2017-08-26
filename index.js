@@ -8,5 +8,5 @@ module.exports = postcss.plugin('postcss-retina-border', function(options) {
     css.walkRules((rule) => {
       process(rule, rule.nodes);
     });
-  }
+  };
 });

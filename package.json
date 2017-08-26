@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "ava index.test.js"
+    "lint": "eslint index.js",
+    "test": "npm run lint && ava index.test.js"
   },
   "author": "lovekonakona@gmail.com",
   "license": "ISC",
@@ -14,6 +15,12 @@
   },
   "devDependencies": {
     "ava": "^0.22.0",
+    "eslint": "^4.5.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
     "postcss": "^6.0.9"
   }
 }
