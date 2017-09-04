@@ -1,13 +1,18 @@
-var postcss = require('postcss');
-var plugin = require('./');
-var test = require('ava');
-var {createDPRMediaQuery} = require('./lib/process');
+const postcss = require('postcss');
+const plugin = require('./');
+const test = require('ava');
+const {createDPRMediaQuery} = require('./lib/process');
+const cssbeautify = require('cssbeautify');
+
+function format(cssStr) {
+  return cssbeautify(cssStr, {indent: '  '});
+}
 
 function run(t, input, output, opts = {}) {
   return getProcessor(opts)
     .process(input)
     .then(result => {
-      t.is(result.css, output);
+      t.is(format(result.css), format(output));
       t.is(result.warnings().length, 0);
     });
 }
@@ -31,16 +36,16 @@ test('createDPRMediaQuery', t => {
 test('border', t => {
   return run(
     t,
-    `a {border: 1px solid #ccc;}, #id->div::before{border-bottom: 1px solid #333}`,
-    `a {border: 1px solid #ccc;}, #id->div::before{border-bottom: 1px solid #333}${mediaQueryR2}{a {border-width: 0.5px;}, #id->div::before {border-bottom-width: 0.5px;}}`
+    `a {border: 1px solid #ccc;} #id->div::before{border-bottom: 1px solid #333;}`,
+    `a {border: 1px solid #ccc;} #id->div::before{border-bottom: 1px solid #333;}${mediaQueryR2}{a {border: 0.5px solid #ccc;} #id->div::before {border-bottom: 0.5px solid #333;}}`
   );
 });
 
 test('not 1px border', t => {
   return run(
     t,
-    `a {border: 2px solid #ccc;}`,
-    `a {border: 2px solid #ccc;}`
+    `a {border: 2px solid #ccc;} .no-border{border: 0px;}`,
+    `a {border: 2px solid #ccc;} .no-border{border: 0px;}`
   );
 });
 
@@ -48,14 +53,38 @@ test('border-top', t => {
   return run(
     t,
     `a {border-top: 1px solid #ccc;}`,
-    `a {border-top: 1px solid #ccc;}${mediaQueryR2}{a {border-top-width: 0.5px;}}`
+    `a {border-top: 1px solid #ccc;}${mediaQueryR2}{a {border-top: 0.5px solid #ccc;}}`
+  );
+});
+
+test('minxin border props 1', t => {
+  return run(
+    t,
+    `a {border: 1px solid #333; border-bottom: 0px;}`,
+    `a {border: 1px solid #333; border-bottom: 0px;}${mediaQueryR2}{a {border: 0.5px solid #333; border-bottom: 0px;}}`
+  );
+});
+
+test('minxin border props 2', t => {
+  return run(
+    t,
+    `a {border: 4px solid #333; border-bottom: 1px;}`,
+    `a {border: 4px solid #333; border-bottom: 1px;}${mediaQueryR2}{a {border: 4px solid #333; border-bottom: 0.5px;}}`
+  );
+});
+
+test('minxin border props 3', t => {
+  return run(
+    t,
+    `a {border: 4px solid #333; border-bottom: 2px;}`,
+    `a {border: 4px solid #333; border-bottom: 2px;}`
   );
 });
 
 test('border-width', t => {
   return run(
     t,
-    `a {border-width: 1px solid #ccc;}`,
-    `a {border-width: 1px solid #ccc;}${mediaQueryR2}{a {border-width: 0.5px;}}`
+    `a {border-width: 1px 2px 3px 4px;}`,
+    `a {border-width: 1px 2px 3px 4px;}${mediaQueryR2}{a {border-width: 0.5px 2px 3px 4px;}}`
   );
 });
