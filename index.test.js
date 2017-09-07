@@ -137,3 +137,26 @@ test('Has comment', t => {
       }`
   );
 });
+
+test('"px" with uppercase letter', t => {
+  return run(
+    t,
+    `
+      ul {
+        list-style-type: none;
+        padding: 0;
+        border: 1PX solid #333;
+      }`,
+    `
+      ul {
+        list-style-type: none;
+        padding: 0;
+        border: 1PX solid #333;
+      }
+      ${media} {
+        ul {
+          border: 0.5px solid #333;
+        }
+      }`
+  );
+});
