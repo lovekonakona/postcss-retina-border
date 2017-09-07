@@ -31,10 +31,10 @@ test('Normal border', t => {
       }
       ${media} {
         a {
-          border: 0.5px solid #ccc;
+          border: 0.5PX solid #ccc;
         }
         #id > div:before {
-          border-bottom: 0.5px solid #333;
+          border-bottom: 0.5PX solid #333;
         }
       }`
   );
@@ -73,7 +73,7 @@ test('One direction', t => {
       }
       ${media} {
         a {
-          border-top: 0.5px solid #ccc;
+          border-top: 0.5PX solid #ccc;
         }
       }`
   );
@@ -94,7 +94,7 @@ test('Mutiple border prop', t => {
       }
       ${media} {
         a {
-          border: 0.5px solid #333;
+          border: 0.5PX solid #333;
           border-bottom: 0px;
         }
       }`
@@ -114,7 +114,7 @@ test('Test border-width', t => {
       }
       ${media} {
         a {
-          border-width: 0.5px 2px 3px 4px;
+          border-width: 0.5PX 2px 3px 4px;
         }
       }`
   );
@@ -155,7 +155,7 @@ test('"px" with uppercase letter', t => {
       }
       ${media} {
         ul {
-          border: 0.5px solid #333;
+          border: 0.5PX solid #333;
         }
       }`
   );
