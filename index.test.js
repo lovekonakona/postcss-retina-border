@@ -27,10 +27,10 @@ const mediaQueryR2p5 = '@media only screen and (-webkit-min-device-pixel-ratio: 
 const mediaQueryR3 = '@media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min--moz-device-pixel-ratio: 3), only screen and (min-resolution: 3dppx), only screen and (min-resolution: 288dpi)';
 
 test('createDPRMediaQuery', t => {
-  t.is(createDPRMediaQuery(1.5).toString(), mediaQueryR1p5);
-  t.is(createDPRMediaQuery(2).toString(), mediaQueryR2);
-  t.is(createDPRMediaQuery(2.5).toString(), mediaQueryR2p5);
-  t.is(createDPRMediaQuery(3).toString(), mediaQueryR3);
+  t.is(createDPRMediaQuery(1.5).toString(), mediaQueryR1p5 + '{}');
+  t.is(createDPRMediaQuery(2).toString(), mediaQueryR2 + '{}');
+  t.is(createDPRMediaQuery(2.5).toString(), mediaQueryR2p5 + '{}');
+  t.is(createDPRMediaQuery(3).toString(), mediaQueryR3 + '{}');
 });
 
 test('border', t => {
@@ -86,5 +86,21 @@ test('border-width', t => {
     t,
     `a {border-width: 1px 2px 3px 4px;}`,
     `a {border-width: 1px 2px 3px 4px;}${mediaQueryR2}{a {border-width: 0.5px 2px 3px 4px;}}`
+  );
+});
+
+test('border', t=>{
+  return run(
+    t,
+    `ul[data-v-f1d9a974] {
+      list-style-type: none;
+      padding: 0;
+      /* border: 1px solid #333; */
+    }`,
+    `ul[data-v-f1d9a974] {
+      list-style-type: none;
+      padding: 0;
+      /* border: 1px solid #333; */
+    }`
   );
 });
