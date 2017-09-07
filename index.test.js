@@ -33,7 +33,7 @@ test('Normal border', t => {
         a {
           border: 0.5px solid #ccc;
         }
-        #id > div::before {
+        #id > div:before {
           border-bottom: 0.5px solid #333;
         }
       }`
