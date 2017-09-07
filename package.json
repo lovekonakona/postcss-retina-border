@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
-    "test": "npm run lint && ava index.test.js",
-    "publish": "npm run test && npm publish"
+    "test": "npm run lint && ava index.test.js"
   },
   "author": "lovekonakona@gmail.com",
   "license": "ISC",
