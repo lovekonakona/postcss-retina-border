@@ -1,18 +1,16 @@
 const postcss = require('postcss');
 const plugin = require('./index');
 const test = require('ava');
-const { createDPRMediaQuery } = require('./lib/process');
+const { media } = require('./lib/process');
 
 function run(t, input, output, opts = {}) {
   return postcss([plugin(opts)])
     .process(input)
     .then(result => {
-      t.is(result.css.replace(/\s+/g, ''), output.replace(/\s+/g, ''));
+      t.is(output.replace(/\s+/g, ''), result.css.replace(/\s+/g, ''));
       t.is(result.warnings().length, 0);
     });
 }
-
-const media = createDPRMediaQuery(2).toString();
 
 test('Normal border', t => {
   return run(
@@ -21,14 +19,14 @@ test('Normal border', t => {
       a {
         border: 1px solid #ccc;
       }
-      #id > div::before {
+      #id > div:before {
         border-bottom: 1px solid #333;
       }`,
     `
       a {
         border: 1px solid #ccc;
       }
-      #id > div::before{
+      #id > div:before{
         border-bottom: 1px solid #333;
       }
       ${media} {
@@ -103,29 +101,7 @@ test('Mutiple border prop', t => {
   );
 });
 
-test('minxin border props 2', t => {
-  return run(
-    t,
-    `
-      a {
-        border: 4px solid #333;
-        border-bottom: 1px;
-      }`,
-    `
-      a {
-        border: 4px solid #333;
-        border-bottom: 1px;
-      }
-      ${media} {
-        a {
-          border: 4px solid #333;
-          border-bottom: 0.5px;
-        }
-      }`
-  );
-});
-
-test('test border-width', t => {
+test('Test border-width', t => {
   return run(
     t,
     `
@@ -140,6 +116,24 @@ test('test border-width', t => {
         a {
           border-width: 0.5px 2px 3px 4px;
         }
+      }`
+  );
+});
+
+test('Has comment', t => {
+  return run(
+    t,
+    `
+      ul {
+        list-style-type: none;
+        padding: 0;
+        /* border: 1px solid #333; */
+      }`,
+    `
+      ul {
+        list-style-type: none;
+        padding: 0;
+        /* border: 1px solid #333; */
       }`
   );
 });
